@@ -39,10 +39,10 @@ The thing is, this formula doesn't really work well for us, because we're not us
 Let's evaluate our example now with the updated algorithm:
 
 
-| Phrase                                        | Adjusted Entropy | Offline Crack Time       | Online Crack Time       |
-|----------------------------------------------|------------------|---------------------------|--------------------------|
-| The Right of the People To Keep And Bear Arms Shall Not Be Infringed | 94.6 bits        | 983 million years         | 9.8 octillion years      |
-| The Right to Bear Burritos Shall Not Be Infringed                | 63.7 bits        | 110 days                  | 30 billion years         |
+| Phrase                                                          | Adjusted Entropy | Offline Crack Time | Online Crack Time       |
+|------------------------------------------------------------------|------------------|--------------------|--------------------------|
+| The Right of the People To Keep And Bear Arms Shall Not Be Infringed | 137.6 bits       | 1.5 octillion years | 480 tredecillion years   |
+| The Right to Bear Burritos Shall Not Be Infringed               | 58.7 bits        | 5.4 days           | 1.5 billion years        |
 
 
 
@@ -177,10 +177,39 @@ Generates 5 zany phrases. You can also:
 
 Outputs an estimate of entropy, plus crack times for both online and offline scenarios. You can tweak the `-Penalty` value if the phrase is especially predictable or particularly obscure.
 
+### 🔧 Adapting for Password Requirements
+
+Some systems have **strict complexity rules** or **length limits** that may prevent you from using these passphrases as-is. Here’s how you can adapt them without losing too much security:
+
+- **Too long?**  
+  Use a single phrase, or enable `-Join` mode in the generator to compress the output into one sentence.
+
+- **Requires numbers or symbols?**  
+  Try:
+  - Replacing a word with a number (`bear → 8ear`)
+  - Adding punctuation (`!`, `?`, `.`, etc.) to the beginning or end
+  - Swapping letters (`a → @`, `s → $`, etc.)
+
+  **Example:**  
+  `"The Right to Bear Burritos Shall Not Be Infringed"`  
+  → `TheRight2BearBurritos!`
+
+- **Length limit (e.g., max 20 characters)?**  
+  Use `-Obfuscate` mode to generate a short acronym:
+
+  ```
+  trtbbsnbi  # from "The Right to Bear Burritos Shall Not Be Infringed"
+  ```
+
+  Then add numbers or symbols for extra strength:  
+  `Trtbbsnbi7!`
+
+These small tweaks preserve **structure**, **meaning**, and **memorability** — the core qualities of a strong passphrase.
+
 
 # In Closing
 
-**Password of the Week**<br>
+## Password of the Week
 To keep things fresh (and frankly, to entertain myself), I’ll be sharing a new Zany Passphrase of the Week right here on this site. Think motivational posters meet password security. They’ll be memorable, ridiculous, and a great starting point for your own variations.
 
 ## Disclaimer
@@ -188,4 +217,11 @@ These passwords are meant to be fun *and* secure, but don't use unmodified examp
 
 ## Special Thanks
 I want to give a shout-out to [OpenAI](https://openai.com/) and [ChatGPT](https://openai.com/chatgpt/overview/), who have made this project fun and collaborative.  Thanks for all that you do!
+
+## 📝 Licensing
+
+- Code in this repository is licensed under the [MIT License](LICENSE).
+If you use these scripts in your own project, I'd love a shout-out!  
+Please include a reference to [Gary McNickle](https://github.com/gmcnickle) and this repository. Not required, but very appreciated.
+- Documentation, images, and written content are licensed under [Creative Commons Attribution 4.0 International](LICENSE-CC-BY.md).
 

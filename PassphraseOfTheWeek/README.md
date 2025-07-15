@@ -1,0 +1,41 @@
+# Passphrase of the Week Archive
+
+Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we showcase a fun, memorable, and surprisingly secure passphrase — often with a twist of humor or history.
+
+---
+
+<table>
+  <tr>
+    <td align="center" valign="top" width="25%">
+      <img src="../assets/right_to_bear_burritos_thumb.png" width="128"/><br/>
+      <strong>The Right to Bear Burritos Shall Not Be Infringed</strong><br/>
+      A twist on the Second Amendment — delicious and unforgettable.<br>
+      <strong>1.5 billion years</strong>
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
+      <strong>*Coming Soon*</strong><br/>
+      Stay tuned for next week’s passphrase!
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
+      <strong>*Coming Soon*</strong><br/>
+      Stay tuned for next week’s passphrase!
+    </td>
+    <td align="center" valign="top" width="25%">
+      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
+      <strong>*Coming Soon*</strong><br/>
+      Stay tuned for next week’s passphrase!
+    </td>
+  </tr>
+</table>
+
+## 🔄 How to Use These
+Each weekly passphrase is:
+- Easy to remember
+- Funny enough to stick in your head
+- Entropy-calculated and strength-checked
+- Easy to adapt to meet complexity requirements
+
+Use them as inspiration, not verbatim passwords — or modify them with symbols/numbers as described in the main [README](https://github.com/gmcnickle/zany_passwords/blob/main/README.md#adapting-for-password-requirements).
+ 
