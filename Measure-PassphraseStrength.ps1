@@ -110,6 +110,10 @@ function Get-EstimatedPenalty {
 
 
 
+# NOTE:
+# This model only penalizes phrases that match known templates or show structural signals of predictability.
+# Highly original or unseen phrases (even if quote-like) may bypass these checks.
+# Future enhancements could incorporate embedding-based semantic similarity for more robust detection.
 function Measure-PassphraseStrength {
     [CmdletBinding()]
     param (
