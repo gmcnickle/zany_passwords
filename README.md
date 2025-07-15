@@ -77,8 +77,6 @@ E = L × log2(R) - P
 
 Where **P** is a penalty (in bits) applied based on how predictable or quote-like the phrase is.
 
-## Estimating P Without Dictionaries
-
 Even without external data or known-quote lists, we can reasonably estimate **P** using heuristic signals derived from the passphrase itself:
 
 | Signal                             | Meaning                              | Suggested Penalty |
