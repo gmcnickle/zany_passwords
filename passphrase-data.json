@@ -1,0 +1,98 @@
+{
+  "verbs": [
+    "Protect", "Encrypt", "Bear", "Defend", "Eat", "Obfuscate", "Disarm", "Praise", "Distill", "Forge"
+  ],
+  "nouns": [
+    "Liberty", "Entropy", "Pizza", "Snakes", "Burritos", "Truth", "Passwords", "Salvation", "Fire", "Syntax"
+  ],
+  "templates": [
+    {
+      "template": "The Right to {0} Shall Not Be {1}.",
+      "category": "constitutional"
+    },
+    {
+      "template": "Give Me {0} or Give Me {1}!",
+      "category": "revolutionary"
+    },
+    {
+      "template": "In {0} We Trust, but {1} We Verify.",
+      "category": "tech"
+    },
+    {
+      "template": "{0} Is the First Rule of {1} Club.",
+      "category": "pop-culture"
+    },
+    {
+      "template": "No {0} Before the {1}!",
+      "category": "military"
+    },
+    {
+      "template": "Do or Do Not, There Is No {0} — Only {1}.",
+      "category": "pop-culture"
+    },
+    {
+      "template": "{0} Is Mightier Than the {1}.",
+      "category": "literary"
+    },
+    {
+      "template": "From My Cold, Dead {0}, You Will Take My {1}.",
+      "category": "constitutional"
+    },
+    {
+      "template": "May the {0} Be with Your {1}.",
+      "category": "pop-culture"
+    },
+    {
+      "template": "In the Beginning, There Was {0}, and Then Came {1}.",
+      "category": "legend"
+    },
+    {
+      "template": "Fortune Favors the {0} Who {1}.",
+      "category": "ancient"
+    },
+    {
+      "template": "Only the {0} Can Truly {1}.",
+      "category": "philosophy"
+    },
+    {
+    "template": "{0} Is Temporary, but {1} Is Forever.",
+    "category": "philosophy"
+    },
+    {
+    "template": "Live Free or {0} by the {1}.",
+    "category": "revolutionary"
+    },
+    {
+    "template": "Never Bring a {0} to a {1} Fight.",
+    "category": "military"
+    },
+    {
+    "template": "All Your {0} Are Belong to {1}.",
+    "category": "tech"
+    },
+    {
+    "template": "The {0} Must Flow — Just Like {1}.",
+    "category": "sci-fi"
+    },
+    {
+    "template": "With Great {0} Comes Great {1}.",
+    "category": "pop-culture"
+    },
+    {
+    "template": "Keep {0} and {1} On.",
+    "category": "modern"
+    },
+    {
+    "template": "It’s Dangerous to {0} Alone. Take This {1}.",
+    "category": "gaming"
+    },
+    {
+    "template": "I Find Your Lack of {0}... {1}.",
+    "category": "pop-culture"
+    },
+    {
+    "template": "To {0}, or Not to {1}. That Is the Question.",
+    "category": "literary"
+    }
+  ]
+}
