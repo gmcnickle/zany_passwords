@@ -150,8 +150,8 @@ We consider two common attack scenarios:
 
 This project includes two PowerShell scripts:
 
-- **`New-ZanyPassphrase.ps1`** – A fun generator that creates memorable (and surprisingly strong) passphrases using slightly absurd phrases.
-- **`Measure-PassphraseStrength.ps1`** – A helper script that estimates how secure a passphrase is using an adjusted entropy formula.
+- **[New-ZanyPassphrase.ps1](https://github.com/gmcnickle/zany_passwords/blob/main/New-ZanyPassword.ps1)** – A fun generator that creates memorable (and surprisingly strong) passphrases using slightly absurd phrases.
+- **[Measure-PassphraseStrength.ps1](https://github.com/gmcnickle/zany_passwords/blob/main/Measure-PassphraseStrength.ps1)** – A helper script that estimates how secure a passphrase is using an adjusted entropy formula.
 
 You can run either script directly from PowerShell. They’re self-documenting with `-?` or `Get-Help`, but here’s a quick primer:
 
