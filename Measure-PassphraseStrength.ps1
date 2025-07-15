@@ -43,11 +43,71 @@ param (
     [string]$Passphrase,
 
     [int]$WordPoolSize = 2000,
-    [int]$Penalty = 40,
+    [int]$Penalty = -1,
 
     [double]$OfflineGuessesPerSecond = 1e12,
     [double]$OnlineGuessesPerSecond = 10
 )
+
+function Get-TemplateMatchPenalty {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Passphrase,
+
+        [Parameter(Mandatory)]
+        [string[]]$Templates
+    )
+
+    foreach ($template in $Templates) {
+        # Convert template to a fuzzy regex by replacing placeholders with .+
+        $pattern = $template -replace '\{[^}]+\}', '.+'
+        if ($Passphrase -match $pattern) {
+            return 25
+        }
+    }
+    return 0
+}
+
+function Get-EstimatedPenalty {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Passphrase,
+
+        [string[]]$Templates = @()
+    )
+
+    $penalty = 0
+
+    # 1. Template match penalty (based on real phrase templates)
+    $penalty += Get-TemplateMatchPenalty -Passphrase $Passphrase -Templates $Templates
+
+    # 2. Title-case heuristic
+    $words = $Passphrase -split '\s+'
+    if (($words | Where-Object { $_ -match '^[A-Z][a-z]+$' }).Count -ge ($words.Count * 0.75)) {
+        $penalty += 5
+    }
+
+    # 3. Stop word signal
+    $stopWords = @('the','of','and','to','a','in','that','it','is','for','on','with','as','was','at','by','be','this','not','are')
+    $stopCount = ($words | Where-Object { $stopWords -contains $_.ToLower() }).Count
+    if ($stopCount -ge ($words.Count * 0.4)) {
+        $penalty += 10
+    }
+
+    # 4. Grammatical flow (basic heuristic)
+    if ($Passphrase -match '^(The|A|An|He|She|They|We|I)\s+\w+.*(be|have|do|shall|will|can|must|not).*') {
+        $penalty += 10
+    }
+
+    # 5. Repetition
+    $dupes = ($words | ForEach-Object { $_.ToLower() } | Group-Object | Where-Object { $_.Count -gt 1 }).Count
+    if ($dupes -gt 0) {
+        $penalty += [Math]::Min(5 + ($dupes * 5), 15)
+    }
+
+    return $penalty
+}
+
 
 
 function Measure-PassphraseStrength {
@@ -57,7 +117,7 @@ function Measure-PassphraseStrength {
         [string]$Passphrase,
 
         [int]$WordPoolSize = 2000,
-        [int]$Penalty = 40,
+        [int]$Penalty = -1,
 
         [double]$OfflineGuessesPerSecond = 1e12,
         [double]$OnlineGuessesPerSecond = 10
@@ -68,6 +128,17 @@ function Measure-PassphraseStrength {
 
     # Theoretical entropy: E = L * log2(R)
     $entropy = [math]::Round($wordCount * [math]::Log($WordPoolSize, 2), 1)
+
+    # Load templates
+    $phraseData = Get-Content -Raw -Path "./passphrase-data.json" | ConvertFrom-Json
+    $allTemplates = $phraseData.templates | Select-Object -ExpandProperty template
+
+    # Apply penalty
+    if ($Penalty -ge 0) {
+        $penalty = $Penalty
+    } else {
+        $penalty = Get-EstimatedPenalty -Passphrase $Passphrase -Templates $allTemplates
+    }
 
     # Adjusted entropy
     $adjustedEntropy = [math]::Round($entropy - $Penalty, 1)

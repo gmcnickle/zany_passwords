@@ -42,9 +42,23 @@ Let's evaluate our example now with the updated algorithm:
 | Phrase                                                          | Adjusted Entropy | Offline Crack Time | Online Crack Time       |
 |------------------------------------------------------------------|------------------|--------------------|--------------------------|
 | The Right of the People To Keep And Bear Arms Shall Not Be Infringed | 137.6 bits       | 1.5 octillion years | 480 tredecillion years   |
-| The Right to Bear Burritos Shall Not Be Infringed               | 58.7 bits        | 5.4 days           | 1.5 billion years        |
+| The Right to Bear Burritos Shall Not Be Infringed               | 48.7 bits        | 7.6 minutes           | 1.4 million years        |
 
+While the adjusted entropy of our zany passphrases may suggest they could be cracked in a short amount of time under worst-case conditions, this estimate assumes a perfect storm: an attacker using a fast brute-force engine, operating offline, against a poorly protected system (e.g., one that uses outdated, unsalted hashes like MD5).
 
+In the real world, most secure systems:
+
+- Use slow, modern password hashing algorithms (like bcrypt or argon2)
+
+- Include salts to prevent precomputed attacks
+
+- Enforce rate limits that make online guessing impractical
+
+When used responsibly — such as stored in password managers, or hashed securely by modern systems — these passphrases become extraordinarily difficult to crack, even by well-funded adversaries. What makes them powerful is not just their structure, but their usability: they're long, unique, and memorable without being burdensome.
+
+This tool doesn't just generate passwords with good entropy — it encourages strong password habits.
+
+> 📝 NOTE: I'll leave it to the reader if you want to adjust the code to only suggest passwords with a minimum offline crack time.  The provided scripts should give you all the tools to do that.
 
 # Appendix
 
@@ -109,20 +123,6 @@ E ≈ 98.7 - 40 = 58.7 bits
 
 #### Summary
 
-While the adjusted entropy of our zany passphrases may suggest they could be cracked in around 100 days under worst-case conditions, this estimate assumes a perfect storm: an attacker using a fast brute-force engine, operating offline, against a poorly protected system (e.g., one that uses outdated, unsalted hashes like MD5).
-
-In the real world, most secure systems:
-
-- Use slow, modern password hashing algorithms (like bcrypt or argon2)
-
-- Include salts to prevent precomputed attacks
-
-- Enforce rate limits that make online guessing impractical
-
-When used responsibly — such as stored in password managers, or hashed securely by modern systems — these passphrases become extraordinarily difficult to crack, even by well-funded adversaries. What makes them powerful is not just their structure, but their usability: they're long, unique, and memorable without being burdensome.
-
-This tool doesn't just generate passwords with good entropy — it encourages strong password habits.
-
 ## Estimating Time to Crack a Passphrase
 
 Once we’ve estimated the **adjusted entropy** of a passphrase, we can use it to calculate the estimated time required to crack it under different attack scenarios.
@@ -146,7 +146,7 @@ We consider two common attack scenarios:
 > The offline cracking estimate assumes a worst-case scenario: an attacker with access to the hashed password and the ability to test 1 trillion guesses per second — possible with fast, outdated algorithms like MD5 or SHA-1. In well-designed systems that use bcrypt, argon2, or other slow hashing methods, real-world crack times could be millions or billions of times longer.
 
 
-## 🔧 How to Use the Included Scripts
+## How to Use the Included Scripts
 
 This project includes two PowerShell scripts:
 
@@ -155,7 +155,7 @@ This project includes two PowerShell scripts:
 
 You can run either script directly from PowerShell. They’re self-documenting with `-?` or `Get-Help`, but here’s a quick primer:
 
-### ✨ Generating Passphrases
+### Generating Passphrases
 
 ```powershell
 .\New-ZanyPassphrase.ps1 -Count 5
@@ -167,7 +167,7 @@ Generates 5 zany phrases. You can also:
 - Use `-Obfuscate` to get an acronym-style output.
 - Use `-Category "classic"` to choose a specific phrase style.
 
-### 🛡️ Measuring Passphrase Strength
+### Measuring Passphrase Strength
 
 ```powershell
 .\Measure-PassphraseStrength.ps1 -Passphrase "Never Bring a Sword to a Brainfight"
@@ -175,7 +175,7 @@ Generates 5 zany phrases. You can also:
 
 Outputs an estimate of entropy, plus crack times for both online and offline scenarios. You can tweak the `-Penalty` value if the phrase is especially predictable or particularly obscure.
 
-### 🔧 Adapting for Password Requirements
+### Adapting for Password Requirements
 
 Some systems have **strict complexity rules** or **length limits** that may prevent you from using these passphrases as-is. Here’s how you can adapt them without losing too much security:
 
@@ -216,7 +216,7 @@ These passwords are meant to be fun *and* secure, but don't use unmodified examp
 ## Special Thanks
 I want to give a shout-out to [OpenAI](https://openai.com/) and [ChatGPT](https://openai.com/chatgpt/overview/), who have made this project fun and collaborative.  Thanks for all that you do!
 
-## 📝 Licensing
+## Licensing
 
 - Code in this repository is licensed under the [MIT License](LICENSE).
 If you use these scripts in your own project, I'd love a shout-out!  
