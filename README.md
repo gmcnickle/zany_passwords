@@ -207,7 +207,7 @@ These small tweaks preserve **structure**, **meaning**, and **memorability** —
 
 # In Closing
 
-## Password of the Week
+## [Password of the Week](https://github.com/gmcnickle/zany_passwords/tree/main/PassphraseOfTheWeek)
 To keep things fresh (and frankly, to entertain myself), I’ll be sharing a new Zany Passphrase of the Week right here on this site. Think motivational posters meet password security. They’ll be memorable, ridiculous, and a great starting point for your own variations.
 
 ## Disclaimer
