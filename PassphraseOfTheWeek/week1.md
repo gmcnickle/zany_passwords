@@ -1,4 +1,4 @@
-![Password Of The Week](https://raw.githubusercontent.com/gmcnickle/zany_passwords/main/assets/right_to_bear_burritos.png)
+![Passphrase Of The Week](https://raw.githubusercontent.com/gmcnickle/zany_passwords/main/assets/right_to_bear_burritos.png)
 
 
 To all patriots everywhere, your Zany Passphrase of the Week is:

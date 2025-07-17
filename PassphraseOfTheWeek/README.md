@@ -13,9 +13,10 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>1.5 billion years</strong>
     </td>
     <td align="center" valign="top" width="25%">
-      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
-      <strong>*Coming Soon*</strong><br/>
-      Stay tuned for next week’s passphrase!
+      <img src="../assets/encrypt_first_rule_salvation_thumb.png" width="128"/><br/>
+      <strong>Encrypt Is the First Rule of Salvation Club</strong><br/>
+      “Encrypt Is the First Rule of Salvation Club” is a massive upgrade from your cousin’s “P@ssword1”.
+      <strong>22,600 years</strong>
     </td>
     <td align="center" valign="top" width="25%">
       <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
