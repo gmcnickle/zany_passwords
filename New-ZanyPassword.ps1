@@ -58,6 +58,7 @@ param (
     [switch]$ListCategories
 )
 
+
 function Get-RandomItem {
     [CmdletBinding()]
     param ([object[]]$InputObject)
@@ -120,7 +121,6 @@ if ($ListCategories) {
     return
 }
 
-# Main logic
 $data = Get-PhraseData
 
 $results = @()
@@ -133,5 +133,4 @@ for ($i = 1; $i -le $Count; $i++) {
     $results += $phrase
 }
 
-# Output result list
 $results | ForEach-Object { Write-Host $_ }

@@ -1,2 +1,2 @@
-.vscode/
-
+*.log
+top_quotes.json

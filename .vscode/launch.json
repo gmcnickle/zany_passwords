@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "New-ZanyPassword",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/New-ZanyPassword.ps1",
+            "args": [
+                "-Count",
+                "10"
+            ]        
+        },
+        {
+            "name": "Measure-PassphraseStrength",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/Measure-PassphraseStrength.ps1",
+            "args": [
+                "-Passphrase",
+                "'Encrypt is the First Rule of Salvation Club'"
+            ]        
+        },
+        {
+            "name": "Test-Jaccard",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/Test-Jaccard.ps1",
+            "args": [
+            ]        
+        }
+    ]
+}
