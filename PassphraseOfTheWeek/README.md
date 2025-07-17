@@ -7,24 +7,36 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
 <table>
   <tr>
     <td align="center" valign="top" width="25%">
-      <img src="../assets/right_to_bear_burritos_thumb.png" width="128"/><br/>
+      <a href = "../assets/right_to_bear_burritos.png">
+        <img src="../assets/right_to_bear_burritos_thumb.png" width="128"/>
+      </a>
+      <br/>
       <strong>The Right to Bear Burritos Shall Not Be Infringed</strong><br/>
       A twist on the Second Amendment — delicious and unforgettable.<br>
       <strong>1.5 billion years</strong>
     </td>
     <td align="center" valign="top" width="25%">
-      <img src="../assets/encrypt_first_rule_salvation_thumb.png" width="128"/><br/>
+      <a href="../assets/encrypt_first_rule_salvation.png">
+        <img src="../assets/encrypt_first_rule_salvation_thumb.png" width="128"/>
+      </a>  
+      <br/>
       <strong>Encrypt Is the First Rule of Salvation Club</strong><br/>
       “Encrypt Is the First Rule of Salvation Club” is a massive upgrade from your cousin’s “P@ssword1”.
       <strong>22,600 years</strong>
     </td>
     <td align="center" valign="top" width="25%">
-      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
+      <a href="../assets/zany_placeholder.png">
+        <img src="../assets/zany_placeholder_thumb.png" width="128"/>
+      </a>
+      <br/>
       <strong>*Coming Soon*</strong><br/>
       Stay tuned for next week’s passphrase!
     </td>
     <td align="center" valign="top" width="25%">
-      <img src="../assets/zany_placeholder_thumb.png" width="128"/><br/>
+      <a href="../assets/zany_placeholder.png">
+        <img src="../assets/zany_placeholder_thumb.png" width="128"/>
+      </a>
+      <br/>
       <strong>*Coming Soon*</strong><br/>
       Stay tuned for next week’s passphrase!
     </td>
