@@ -44,7 +44,6 @@ jobs:
             -Copyright="© Gary McNickle 2025" \
             -XMP:UsageTerms="Licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/)" \
             -XMP:Creator="Gary McNickle" \
-            -XMP-photoshop:CopyrightStatus=2 \
             -XMP:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
             -overwrite_original \
             -fast
