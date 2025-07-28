@@ -1,0 +1,47 @@
+name: Update Image Metadata
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'assets/**.jpg'
+      - 'assets/**.png'
+
+jobs:
+  update-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install ExifTool
+        run: sudo apt-get update && sudo apt-get install -y exiftool
+
+      - name: Update image metadata
+        run: |
+          exiftool -Copyright="© Gary McNickle 2025" \
+                   -XMP:UsageTerms="Licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/)" \
+                   -XMP:Creator="Gary McNickle" \
+                   -XMP-photoshop:CopyrightStatus=2 \
+                   -XMP:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
+                   -overwrite_original \
+                   -ext jpg -ext png assets/
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          if git status --porcelain | grep .; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add assets/*.jpg assets/*.png
+          git commit -m "Updated image metadata with copyright notice, status, and URL"
+          git push
