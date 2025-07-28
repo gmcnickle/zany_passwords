@@ -25,7 +25,7 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>22,600 years</strong>
     </td>
     <td align="center" valign="top" width="25%">
-      <a href="../assets/encrypt_first_rule_salvation.png">
+      <a href="../assets/in_the_beginning_rebellion.png">
         <img src="../assets/in_the_beginning_rebellion_thumb.png" width="128"/>
       </a>  
       <br/>
