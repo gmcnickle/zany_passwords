@@ -9,12 +9,15 @@ Your Zany Passphrase of the Week is:
 
 Like a digital Genesis, this phrase speaks of the primordial stew from which all covert ops and righteous insurrections are born.
 
+Rebellions don’t start fully formed—they simmer. They’re born in shadows, in whispered frustrations, in the slow corrosion of trust. When institutions mishandle what we entrust to them—our identities, our histories, our secrets—they sow the seeds of revolt.
+If companies want to avoid becoming the next target of digital pitchforks and fire, they’d do well to remember: privacy isn't a luxury—it’s the last line of loyalty.
+
 - Camouflage hides the signal in the noise.
 - Rebellion brings the fire to light it up.
 
 With entropy as your canvas and encryption as your brush, go forth and secure boldly.
 
-With a brute-force cracking time of 92.7 million years, “In the Beginning, There Was Camouflage, and Then Came Rebellion” is precisely the kind of phrase that makes even the elite at `0xC0FFEE` roll their eyes, mutter curses, and reach for something stronger.
+With a brute-force cracking time of 92.7 million years, “In the Beginning, There Was Camouflage, and Then Came Rebellion” is precisely the kind of phrase that makes even the elites at `0xC0FFEE` roll their eyes, mutter curses, and reach for something stronger.
 
 Why does it work?
 - Mythic tone with cyberpunk flair
@@ -24,6 +27,5 @@ Why does it work?
 Enjoy, and use responsibly.
 
 > They can’t crack what they can’t even comprehend.
-
 
 
