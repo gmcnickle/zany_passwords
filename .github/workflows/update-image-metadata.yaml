@@ -14,19 +14,40 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch previous commit for diff
+
+      - name: Cache ExifTool
+        id: cache-exiftool
+        uses: actions/cache@v4
+        with:
+          path: /usr/bin/exiftool
+          key: exiftool-${{ runner.os }}-13.33
+          restore-keys: exiftool-${{ runner.os }}-
 
       - name: Install ExifTool
+        if: steps.cache-exiftool.outputs.cache-hit != 'true'
         run: sudo apt-get update && sudo apt-get install -y exiftool
 
-      - name: Update image metadata
+      - name: Get changed image files
+        id: changed-files
         run: |
-          exiftool -Copyright="© Gary McNickle 2025" \
-                   -XMP:UsageTerms="Licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/)" \
-                   -XMP:Creator="Gary McNickle" \
-                   -XMP-photoshop:CopyrightStatus=2 \
-                   -XMP:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
-                   -overwrite_original \
-                   -ext jpg -ext png assets/
+          # Get list of changed jpg/png files since last commit
+          CHANGED_FILES=$(git diff --name-only HEAD^ HEAD -- 'assets/*.jpg' 'assets/*.png' || true)
+          echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
+
+      - name: Update image metadata
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          # Process only changed files
+          echo "${{ steps.changed-files.outputs.files }}" | xargs -r exiftool \
+            -Copyright="© Gary McNickle 2025" \
+            -XMP:UsageTerms="Licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/)" \
+            -XMP:Creator="Gary McNickle" \
+            -XMP-photoshop:CopyrightStatus=2 \
+            -XMP:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
+            -overwrite_original \
+            -fast
 
       - name: Check for changes
         id: git-check
@@ -44,5 +65,5 @@ jobs:
           git config user.email "action@github.com"
           # Add jpg and png files if they exist, without failing if none match
           find assets -type f \( -name "*.jpg" -o -name "*.png" \) -exec git add {} +
-          git commit -m "Updated image metadata with copyright notice, status, and URL"
+          git commit -m "Updated image metadata with copyright notice, status, and URL [ci skip]"
           git push
