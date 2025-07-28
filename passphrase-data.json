@@ -1,9 +1,11 @@
 {
   "verbs": [
-    "Protect", "Encrypt", "Bear", "Defend", "Eat", "Obfuscate", "Disarm", "Praise", "Distill", "Forge"
+    "Protect", "Encrypt", "Bear", "Defend", "Eat", "Obfuscate", "Disarm", "Praise", "Distill", "Forge",
+    "Invoke", "Shred", "Subvert", "Camouflage", "Decode", "Hack", "Dominate", "Dispel", "Illuminate", "Crush"
   ],
   "nouns": [
-    "Liberty", "Entropy", "Pizza", "Snakes", "Burritos", "Truth", "Passwords", "Salvation", "Fire", "Syntax"
+    "Liberty", "Entropy", "Pizza", "Snakes", "Burritos", "Truth", "Passwords", "Salvation", "Fire", "Syntax",
+    "Rebellion", "Shadow", "Firewall", "Sausage", "Quantum", "Banana", "Codebase", "Bunker", "Justice", "Anomaly"
   ],
   "templates": [
     {
@@ -43,7 +45,7 @@
       "category": "pop-culture"
     },
     {
-      "template": "In the Beginning, There Was {0}, and Then Came {1}.",
+      "template": "In the Beginning There Was {0}, and Then Came {1}.",
       "category": "legend"
     },
     {
@@ -55,44 +57,84 @@
       "category": "philosophy"
     },
     {
-    "template": "{0} Is Temporary, but {1} Is Forever.",
-    "category": "philosophy"
+      "template": "{0} Is Temporary, but {1} Is Forever.",
+      "category": "philosophy"
     },
     {
-    "template": "Live Free or {0} by the {1}.",
-    "category": "revolutionary"
+      "template": "Live Free or {0} by the {1}.",
+      "category": "revolutionary"
     },
     {
-    "template": "Never Bring a {0} to a {1} Fight.",
-    "category": "military"
+      "template": "Never Bring a {0} to a {1} Fight.",
+      "category": "military"
     },
     {
-    "template": "All Your {0} Are Belong to {1}.",
-    "category": "tech"
+      "template": "All Your {0} Are Belong to {1}.",
+      "category": "tech"
     },
     {
-    "template": "The {0} Must Flow — Just Like {1}.",
-    "category": "sci-fi"
+      "template": "The {0} Must Flow — Just Like {1}.",
+      "category": "sci-fi"
     },
     {
-    "template": "With Great {0} Comes Great {1}.",
-    "category": "pop-culture"
+      "template": "With Great {0} Comes Great {1}.",
+      "category": "pop-culture"
     },
     {
-    "template": "Keep {0} and {1} On.",
-    "category": "modern"
+      "template": "Keep {0} and {1} On.",
+      "category": "modern"
     },
     {
-    "template": "It’s Dangerous to {0} Alone. Take This {1}.",
-    "category": "gaming"
+      "template": "It’s Dangerous to {0} Alone. Take This {1}.",
+      "category": "gaming"
     },
     {
-    "template": "I Find Your Lack of {0}... {1}.",
-    "category": "pop-culture"
+      "template": "I Find Your Lack of {0}... {1}.",
+      "category": "pop-culture"
     },
     {
-    "template": "To {0}, or Not to {1}. That Is the Question.",
-    "category": "literary"
+      "template": "To {0}, or Not to {1}. That Is the Question.",
+      "category": "literary"
+    },
+    {
+      "template": "You Can’t Handle the {0}! Bring Me the {1}!",
+      "category": "pop-culture"
+    },
+    {
+      "template": "Let Them {0} {1}.",
+      "category": "historical"
+    },
+    {
+      "template": "One {0} to Rule Them All, One {1} to Bind Them.",
+      "category": "fantasy"
+    },
+    {
+      "template": "The {0} Awakens, Fueled by {1}.",
+      "category": "sci-fi"
+    },
+    {
+      "template": "Speak {0} and Enter the Realm of {1}.",
+      "category": "fantasy"
+    },
+    {
+      "template": "I Came Here to {0} {1} and Kick Ass.",
+      "category": "cult-classic"
+    },
+    {
+      "template": "There Is No {0}, Only {1}.",
+      "category": "pop-culture"
+    },
+    {
+      "template": "They Who {0} the {1} Control the Universe.",
+      "category": "sci-fi"
+    },
+    {
+      "template": "When Life Gives You {0}, {1} Harder.",
+      "category": "modern"
+    },
+    {
+      "template": "Cry {0}, and Let Slip the {1} of War!",
+      "category": "literary"
     }
   ]
 }

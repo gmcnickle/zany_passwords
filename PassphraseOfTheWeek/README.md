@@ -25,12 +25,13 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>22,600 years</strong>
     </td>
     <td align="center" valign="top" width="25%">
-      <a href="../assets/zany_placeholder.png">
-        <img src="../assets/zany_placeholder_thumb.png" width="128"/>
-      </a>
+      <a href="../assets/encrypt_first_rule_salvation.png">
+        <img src="../assets/in_the_beginning_rebellion_thumb.png" width="128"/>
+      </a>  
       <br/>
-      <strong>*Coming Soon*</strong><br/>
-      Stay tuned for next week’s passphrase!
+      <strong>In the Beginning, There Was Camouflage, and Then Came Rebellion</strong><br/>
+      With entropy as your canvas and encryption as your brush, go forth and secure boldly..
+      <strong>92.7 million years</strong>
     </td>
     <td align="center" valign="top" width="25%">
       <a href="../assets/zany_placeholder.png">
