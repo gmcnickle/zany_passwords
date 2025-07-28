@@ -217,13 +217,17 @@ To keep things fresh (and frankly, to entertain myself), I’ll be sharing a new
 ## Disclaimer
 These passwords are meant to be fun *and* secure, but don't use unmodified examples as-is -- always generate your own!
 
+## Credits
+This project uses a modified and optimized version of the [Quotes Dataset originally curated by akmittal](https://www.kaggle.com/datasets/akmittal/quotes-dataset) on Kaggle.
+The individual quotes are believed to be in the public domain, but the original dataset compilation is credited to the author.
+My version includes transformations for performance and relevance to this application.
+
 ## Special Thanks
 I want to give a shout-out to [OpenAI](https://openai.com/) and [ChatGPT](https://openai.com/chatgpt/overview/), who have made this project fun and collaborative.  Thanks for all that you do!
 
 ## Licensing
-
-- Code in this repository is licensed under the [MIT License](LICENSE).
-If you use these scripts in your own project, I'd love a shout-out!  
-Please include a reference to [Gary McNickle](https://github.com/gmcnickle) and this repository. Not required, but very appreciated.
-- Documentation, images, and written content are licensed under [Creative Commons Attribution 4.0 International](LICENSE-CC-BY.md).
+- **Code**: All source code files (e.g., .py, .js, .c) in this repository are licensed under the [MIT License](LICENSE.md). If you use these scripts, a shout-out to [Gary McNickle](https://github.com/gmcnickle) and this repository is appreciated but not required.
+- **Non-Code Content**: All documentation, images, and written content (e.g., .md, .jpg, .png, .txt, .pdf) are licensed under the [Creative Commons Attribution 4.0 International Public License](LICENSE-CC-BY.md). Please attribute as: "© Gary McNickle 2025, licensed under CC BY 4.0 International" with a link to https://creativecommons.org/licenses/by/4.0/.
+- **Other Files**: Any files not explicitly categorized (e.g., .json, .yml) are licensed under CC BY 4.0 unless otherwise noted.
+- **Contributions**: By contributing to this repository, you agree to license your code under the MIT License and non-code contributions under CC BY 4.0.
 
