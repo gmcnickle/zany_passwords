@@ -29,14 +29,14 @@ Measure-PassphraseStrength -Passphrase "Never Bring a Sword to a Brainfight" -Pe
 Adjusts the penalty to reflect moderate predictability.
 
 .NOTES
-Author: Gary McNickle (gmcnickle@outlook.com)  
+Copyright (c) 2025 Gary McNickle
+Licensed under the MIT License (see LICENSE.md)
 Collaborator: ChatGPT (OpenAI)
 
 This script was collaboratively designed through interactive sessions with ChatGPT, combining human insight and AI-assisted development.
-
-Licensed under the MIT License.  
-Attribution is appreciated: https://github.com/gmcnickle/zany_passwords
+Attribution is appreciated: https://github.com/gmcnickle/zany_passwords but not required.
 #>
+
 [CmdletBinding()]
 param (
     [Parameter(Mandatory)]
