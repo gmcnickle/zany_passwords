@@ -32,21 +32,26 @@ jobs:
       - name: Get changed image files
         id: changed-files
         run: |
-          # Get list of changed jpg/png files since last commit
           CHANGED_FILES=$(git diff --name-only HEAD^ HEAD -- 'assets/*.jpg' 'assets/*.png' || true)
           echo "files=$CHANGED_FILES" >> $GITHUB_OUTPUT
 
       - name: Update image metadata
         if: steps.changed-files.outputs.files != ''
         run: |
-          # Process only changed files
           echo "${{ steps.changed-files.outputs.files }}" | xargs -r exiftool \
-            -Copyright="© Gary McNickle 2025" \
-            -XMP:UsageTerms="Licensed under Creative Commons Attribution 4.0 International (https://creativecommons.org/licenses/by/4.0/)" \
-            -XMP:Creator="Gary McNickle" \
-            -XMP:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
+            -XMP-dc:Creator="Gary McNickle" \
+            -XMP-dc:Rights="(c) Gary McNickle 2025 - CC BY 4.0" \
+            -XMP-xmpRights:UsageTerms="Creative Commons Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/)" \
+            -XMP-xmpRights:WebStatement="https://creativecommons.org/licenses/by/4.0/" \
+            -PNG:Author="Gary McNickle" \
+            -PNG:Copyright="(c) Gary McNickle 2025" \
             -overwrite_original \
             -fast
+
+      - name: Dump metadata to log
+        if: steps.changed-files.outputs.files != ''
+        run: |
+          echo "${{ steps.changed-files.outputs.files }}" | xargs -r exiftool -XMP:All -PNG:All
 
       - name: Check for changes
         id: git-check
@@ -62,7 +67,6 @@ jobs:
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
-          # Add jpg and png files if they exist, without failing if none match
           find assets -type f \( -name "*.jpg" -o -name "*.png" \) -exec git add {} +
           git commit -m "Updated image metadata with copyright notice, status, and URL [ci skip]"
           git push
