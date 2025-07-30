@@ -7,6 +7,7 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
 <table>
   <tr>
     <td align="center" valign="top" width="25%">
+      <p>July 15th, 2025</p>
       <a href = "../assets/right_to_bear_burritos.png">
         <img src="../assets/right_to_bear_burritos_thumb.png" width="128"/>
       </a>
@@ -16,6 +17,7 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>1.5 billion years</strong>
     </td>
     <td align="center" valign="top" width="25%">
+      <p>July 27th, 2025</p>
       <a href="../assets/encrypt_first_rule_salvation.png">
         <img src="../assets/encrypt_first_rule_salvation_thumb.png" width="128"/>
       </a>  
@@ -25,6 +27,7 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>22,600 years</strong>
     </td>
     <td align="center" valign="top" width="25%">
+      <p>NEXT (8/1)</p>
       <a href="../assets/in_the_beginning_rebellion.png">
         <img src="../assets/in_the_beginning_rebellion_thumb.png" width="128"/>
       </a>  
@@ -34,6 +37,7 @@ Welcome to the Zany Passwords "Passphrase of the Week" gallery. Each week, we sh
       <strong>92.7 million years</strong>
     </td>
     <td align="center" valign="top" width="25%">
+      <p>Coming Soon</p>
       <a href="../assets/zany_placeholder.png">
         <img src="../assets/zany_placeholder_thumb.png" width="128"/>
       </a>
