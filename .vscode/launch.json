@@ -12,13 +12,23 @@
             ]        
         },
         {
+            "name": "New-Obfuscated ZanyPassword",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/New-ZanyPassword.ps1",
+            "args": [
+                "-Count","10",
+                "-ObfuscationMode", "hash"  
+            ]        
+        },
+        {
             "name": "Measure-PassphraseStrength",
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}/Measure-PassphraseStrength.ps1",
             "args": [
                 "-Passphrase",
-                "'Encrypt is the First Rule of Salvation Club'"
+                "'Th3y_Who-Hack{Rebellion}>Control$Universe'"
             ]        
         },
         {

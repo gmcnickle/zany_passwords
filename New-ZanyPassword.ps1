@@ -17,8 +17,13 @@ Filter templates by category (e.g., "tech", "pop-culture", "revolutionary").
 .PARAMETER Join
 Combines two separate passphrases into one joined phrase.
 
-.PARAMETER Obfuscate
-Obfuscates each generated passphrase into an acronym-style string.
+.PARAMETER ObfuscationMode
+Specifies how the generated passphrase should be transformed or obfuscated. Options include:
+- "none"      : (default) No transformation
+- "leet"      : Applies basic leetspeak substitutions (e.g., a → 4, e → 3)
+- "compress"  : Reduces to acronym-style string (first letter of each word)
+- "hash"      : Returns a SHA-256 hash of the phrase
+- "scramble"  : Randomizes word order in the phrase
 
 .PARAMETER JsonPath
 Optional path to the passphrase data JSON file (defaults to 'passphrase-data.json' in the script directory).
@@ -33,7 +38,7 @@ Lists all available template categories and exits.
 .\New-ZanyPassword.ps1 -Count 3 -Category tech
 
 .EXAMPLE
-.\New-ZanyPassword.ps1 -Join -Obfuscate
+.\New-ZanyPassword.ps1 -Join -ObfuscationMode leet
 
 .EXAMPLE
 .\New-ZanyPassword.ps1 -ListCategories
@@ -51,8 +56,9 @@ param (
     [string]$JsonPath = "$PSScriptRoot\passphrase-data.json",
     [string]$Category,
     [switch]$Join,
-    [switch]$Obfuscate,
-    [ValidateRange(1, 20)]
+    [ValidateSet("none", "leet", "compress", "hash", "scramble")]
+    [string]$ObfuscationMode = "none",
+    [ValidateRange(1, 50)]
     [int]$Count = 1,
     [switch]$ListCategories
 )
@@ -105,13 +111,73 @@ function New-Passphrase {
     return $phrase1
 }
 
-function ConvertTo-ObfuscatedPhrase {
+function ConvertTo-CompressedPhrase {
     [CmdletBinding()]
-    param ([string]$Phrase)
+    param (
+        [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+        [string]$Phrase
+    )
 
     $words = $Phrase -replace '[^a-zA-Z0-9 ]', '' -split '\s+'
     return ($words | ForEach-Object { $_.Substring(0,1) }) -join ''
 }
+
+function ConvertTo-HashedPhrase {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+        [string]$Phrase
+    )
+
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Phrase)
+    $hash = $sha256.ComputeHash($bytes)
+    return -join ($hash | ForEach-Object { "{0:x2}" -f $_ })
+}
+
+function ConvertTo-ScrambledPhrase {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+        [string]$Phrase
+    )
+
+    $words = $Phrase -split '\s+'
+    $rng = New-Object System.Random
+    $shuffled = $words | Sort-Object { $rng.Next() }
+    return ($shuffled -join ' ')
+}
+
+
+function  ConvertTo-LeetifiedPassphrase {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+        [string]$Phrase
+    )
+
+    $subs = @{
+        'a' = '4'
+        'e' = '3'
+        'i' = '1'
+        'o' = '0'
+        's' = '$'
+        't' = '7'
+    }
+
+    $chars = $Phrase.ToCharArray()
+    for ($i = 0; $i -lt $chars.Length; $i++) {
+        $lower = "$($chars[$i])".ToLowerInvariant()
+        if ($subs.ContainsKey($lower)) {
+            $chars[$i] = $subs[$lower]
+        }
+    }
+
+    return -join $chars
+}
+
+
+
 
 if ($ListCategories) {
     $categories = $data.templates | ForEach-Object { $_.category } | Sort-Object -Unique
@@ -126,9 +192,14 @@ $results = @()
 
 for ($i = 1; $i -le $Count; $i++) {
     $phrase = New-Passphrase -Data $data -CategoryFilter $Category -Join:$Join
-    if ($Obfuscate) {
-        $phrase = ConvertTo-ObfuscatedPhrase $phrase
+
+    switch ($ObfuscationMode.ToLowerInvariant()) {
+        "compress" { $phrase = ConvertTo-CompressedPhrase $phrase }
+        "hash"     { $phrase = ConvertTo-HashedPhrase $phrase }
+        "leet"     { $phrase =  ConvertTo-LeetifiedPassphrase $phrase }
+        "scramble" { $phrase = ConvertTo-ScrambledPhrase $phrase }
     }
+
     $results += $phrase
 }
 

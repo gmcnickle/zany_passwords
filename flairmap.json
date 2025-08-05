@@ -1,0 +1,13 @@
+{
+  "1": ["Bruh.", "This is literally one second. Are you okay?"],
+  "60": ["That's adorable.", "Wow. So brave.", "Password123 would beat this."],
+  "3600": ["Blink and you’ll miss it.", "Did you even try?", "My toaster could brute-force that."],
+  "86400": ["Maybe don’t use your dog’s name.", "Next time, try two brain cells.", "Too short to live."],
+  "31556952": ["Crackable... but you tried.", "Eh, it'll hold for a little while.", "Mediocre at best."],
+  "1e8": ["Not bad. But a GPU could still chew through this during lunch.", "Respectable. Keep going.", "I’d swipe right on this passphrase."],
+  "1e12": ["Your ancestors salute your entropy.", "Now we’re talking.", "Strong enough to shame your coworkers."],
+  "1e20": ["The stars will dim before this falls.", "Cry havoc, and let slip the dogs of math.", "Forged in the fires of Mount Security."],
+  "1e30": ["Civilizations may rise and fall, but this shall endure.", "The cryptographic gods smile upon you.", "NASA would be proud."],
+  "1e50": ["Time itself would weep before this is cracked.", "Entropy incarnate.", "This passphrase could outlive the universe."]
+}
+    

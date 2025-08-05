@@ -60,97 +60,6 @@ function Truncate-String {
     return $InputString.Substring(0, $MaxLength) + "..."
 }
 
-function Measure-Timing {
-    param (
-        [ScriptBlock]$Script
-    )
-
-    $scriptText = Truncate-String -InputString ($Script.ToString().Trim()) -MaxLength 50
-
-    $sw = [System.Diagnostics.Stopwatch]::StartNew()
-    $result = & $Script
-    $sw.Stop()
-
-    $elapsed = $sw.ElapsedMilliseconds
-    Write-Host "[$elapsed ms] $scriptText"
-
-    return $result, [PSCustomObject]@{
-        Duration = $sw.Elapsed
-        Milliseconds = $elapsed
-        Seconds = [Math]::Round($sw.Elapsed.TotalSeconds, 3)
-    }
-}
-
-function Analyze-QuotePopularity {
-    param (
-        [Parameter(Mandatory)]
-        [array]$Quotes
-    )
-
-    $popularityValues = $Quotes | Where-Object { $_.Popularity -ge 0 } | ForEach-Object { [double]$_.Popularity } | Sort-Object
-    $count = $popularityValues.Count
-
-    if ($count -eq 0) {
-        Write-Host "No popularity data found." -ForegroundColor Red
-        return
-    }
-
-    $min    = $popularityValues[0]
-    $max    = $popularityValues[-1]
-    $mean   = [math]::Round(($popularityValues | Measure-Object -Average).Average, 6)
-    $median = if ($count % 2 -eq 0) {
-        [math]::Round((($popularityValues[$count / 2] + $popularityValues[($count / 2) - 1]) / 2), 6)
-    } else {
-        [math]::Round($popularityValues[($count - 1) / 2], 6)
-    }
-
-    Write-Host "📊 Quote Popularity Summary:" -ForegroundColor Cyan
-    Write-Host "Total Quotes : $count"
-    Write-Host "Min          : $min"
-    Write-Host "Max          : $max"
-    Write-Host "Mean         : $mean"
-    Write-Host "Median       : $median"
-    Write-Host ""
-
-    # --- Fixed Value Bins ---
-    $step = 0.01
-    $bins = @{}
-
-    for ($edge = 0.0; $edge -lt 1.0; $edge += $step) {
-        $label = "{0:N2}–{1:N2}" -f $edge, ($edge + $step)
-        $bins[$label] = 0
-    }
-
-    foreach ($p in $popularityValues) {
-        $bucket = [math]::Floor($p / $step) * $step
-        $label = "{0:N2}–{1:N2}" -f $bucket, ($bucket + $step)
-        if (-not $bins.ContainsKey($label)) {
-            $bins[$label] = 0
-        }
-        $bins[$label]++
-    }
-
-    Write-Host "📈 Fixed Buckets (by 0.01):" -ForegroundColor Cyan
-    foreach ($key in ($bins.Keys | Sort-Object)) {
-        $countInBin = $bins[$key]
-        if ($countInBin -gt 0) {
-            Write-Host ("{0,-12}: {1,6}" -f $key, $countInBin)
-        }
-    }
-
-    Write-Host ""
-
-    # --- Decile Quantiles ---
-    Write-Host "📐 Popularity Quantiles (Deciles):" -ForegroundColor Cyan
-    for ($i = 1; $i -le 10; $i++) {
-        $percentile = [math]::Floor(($i / 10) * $count) - 1
-        if ($percentile -lt 0) { $percentile = 0 }
-        $value = [math]::Round($popularityValues[$percentile], 6)
-        Write-Host ("Top {0,2}% of quotes have Popularity ≥ {1}" -f (100 - $i * 10), $value)
-    }
-}
-
-
 function Import-Quotes {
     Write-Host "Loading quotes database from $PSScriptRoot\QuotesDB.json"
 
@@ -163,9 +72,6 @@ function Import-Quotes {
     ConvertTo-Json | Out-File -FilePath "top_quotes.json" -Encoding UTF8
 
     Write-Host "Loaded $quoteCount quotes."
-
-#    Write-Host "Analyzing quote popularity..."
-#    Analyze-QuotePopularity -Quotes $quotesDB
 
     Write-Host "Building quote index..."
 
@@ -220,13 +126,6 @@ $global:stopWords = @(
     'on','with','as','was','at','by','be','this','not','are'
 )
 
-function Remove-StopWords {
-    param ([string]$Text)
-
-    $pattern = '(?i)\b(' + ($global:stopWords -join '|') + ')\b'
-    return ($Text -replace $pattern, '').Trim() -replace '\s{2,}', ' '
-}
-
 function Get-JaccardSimilarity {
     param (
         [string[]]$TokensA,
@@ -251,56 +150,6 @@ function Get-JaccardSimilarity {
     $result = [Math]::Round($intersectionCount / $unionCount, 3)
     return $result
 }
-
-function Get-JaccardSimilarityOrig {
-    param (
-        [string[]]$TokensA,
-        [string[]]$TokensB
-    )
-
-    $setA = [System.Collections.Generic.HashSet[string]]::new()
-    $setB = [System.Collections.Generic.HashSet[string]]::new()
-    $TokensA | ForEach-Object { $setA.Add($_) }
-    $TokensB | ForEach-Object { $setB.Add($_) }
-
-    $intersectionCount = $setA.Where({ $setB.Contains($_) }).Count
-    $unionCount = ($setA + $setB | Select-Object -Unique).Count
-
-    if ($unionCount -eq 0) { return 0 }
-    return [Math]::Round($intersectionCount / $unionCount, 3)
-}
-
-function Get-JaccardSimilarityNew {
-    param (
-        [string[]]$TokensA,
-        [string[]]$TokensB
-    )
-
-    # Ensure proper [string[]] arrays
-    $setA = [string[]]@(
-        $TokensA | Where-Object { $_ -is [string] -and $_ -ne '' } | Select-Object -Unique
-    )
-
-    $setB = [string[]]@(
-        $TokensB | Where-Object { $_ -is [string] -and $_ -ne '' } | Select-Object -Unique
-    )
-
-    # HashSet for B
-    $setBHash = [System.Collections.Generic.HashSet[string]]::new()
-    $null = $setBHash.UnionWith($setB)
-
-    # Find intersection
-    $intersection = $setA | Where-Object { $setBHash.Contains($_) }
-
-    # Union
-    $union = $setA + $setB | Select-Object -Unique
-
-    if ($union.Count -eq 0) { return 0 }
-
-    return [Math]::Round($intersection.Count / $union.Count, 4)
-}
-
-
 
 function Test-IsPassphraseLikelyQuote {
     param (
@@ -433,29 +282,116 @@ function Get-TemplateMatchPenalty {
     return 0
 }
 
+function Get-FlairMap {
+    param (
+        [string]$FlairFilePath = "$PSScriptRoot\flairmap.json"
+    )
+
+    # Load flair map from JSON or use fallback
+    $flairMap = @{}
+
+    if ($FlairFilePath -and (Test-Path $FlairFilePath)) {
+        try {
+            $json = Get-Content $FlairFilePath -Raw | ConvertFrom-Json
+            foreach ($key in $json.PSObject.Properties.Name) {
+                $flairMap[[double]::Parse($key)] = @($json.$key)
+            }
+        } catch {
+            Write-Warning "Could not parse flair file '$FlairFilePath'. Falling back to built-in flair."
+        }
+    }
+
+    if (-not $flairMap.Count) {
+        $flairMap = @{
+            1 = @("Bruh.", "This is literally one second. Are you okay?")
+            60 = @("That's adorable.", "Wow. So brave.", "Password123 would beat this.")
+            3600 = @("Blink and you’ll miss it.", "Did you even try?", "My toaster could brute-force that.")
+            86400 = @("Maybe don’t use your dog’s name.", "Next time, try two brain cells.", "Too short to live.")
+            31556952 = @("Crackable... but you tried.", "Eh, it'll hold for a little while.", "Mediocre at best.")
+            1e8 = @("Not bad. But a GPU could still chew through this during lunch.", "Respectable. Keep going.", "I’d swipe right on this passphrase.")
+            1e12 = @("Your ancestors salute your entropy.", "Now we’re talking.", "Strong enough to shame your coworkers.")
+            1e20 = @("The stars will dim before this falls.", "Cry havoc, and let slip the dogs of math.", "Forged in the fires of Mount Security.")
+            1e30 = @("Civilizations may rise and fall, but this shall endure.", "The cryptographic gods smile upon you.", "NASA would be proud.")
+            1e50 = @("Time itself would weep before this is cracked.", "Entropy incarnate.", "This passphrase could outlive the universe.")
+        }
+    }
+
+    return $flairMap
+}
+
 function Format-Time {
-    param ([double]$Seconds)
+    param (
+        [double]$Seconds
+    )
 
-    if ($Seconds -lt 60) { return "{0:N1} seconds" -f $Seconds }
-    elseif ($Seconds -lt 3600) { return "{0:N1} minutes" -f ($Seconds / 60) }
-    elseif ($Seconds -lt 86400) { return "{0:N1} hours" -f ($Seconds / 3600) }
-    elseif ($Seconds -lt 31556952) { return "{0:N1} days" -f ($Seconds / 86400) }
-    else {
-        $years = $Seconds / 31556952
+    # Load flair map from JSON or use fallback
+    $flairMap = Get-FlairMap
 
-        if ($years -lt 10000)          { return "{0:N1} years" -f $years }
-        elseif ($years -lt 1e6)         { return "{0:N1} thousand years" -f ($years / 1e3) }
-        elseif ($years -lt 1e9)         { return "{0:N1} million years" -f ($years / 1e6) }
-        elseif ($years -lt 1e12)        { return "{0:N1} billion years" -f ($years / 1e9) }
-        elseif ($years -lt 1e15)        { return "{0:N1} trillion years" -f ($years / 1e12) }
-        elseif ($years -lt 1e18)        { return "{0:N1} quadrillion years" -f ($years / 1e15) }
-        elseif ($years -lt 1e21)        { return "{0:N1} quintillion years" -f ($years / 1e18) }
-        elseif ($years -lt 1e24)        { return "{0:N1} sextillion years" -f ($years / 1e21) }
-        elseif ($years -lt 1e27)        { return "{0:N1} septillion years" -f ($years / 1e24) }
-        else                            { return "{0:N1} octillion years" -f ($years / 1e27) }
+    # Format time
+    $years = $Seconds / 31556952
+    $units = @(
+        "", "thousand", "million", "billion", "trillion", "quadrillion",
+        "quintillion", "sextillion", "septillion", "octillion", "nonillion", "decillion"
+    )
+
+    $i = 0
+    while ($years -ge 1000 -and $i -lt $units.Count - 1) {
+        $years /= 1000
+        $i++
+    }
+
+    $formatted = switch ($Seconds) {
+        { $_ -lt 60 }       { "{0:N1} seconds" -f $Seconds; break }
+        { $_ -lt 3600 }     { "{0:N1} minutes" -f ($Seconds / 60); break }
+        { $_ -lt 86400 }    { "{0:N1} hours" -f ($Seconds / 3600); break }
+        { $_ -lt 31556952 } { "{0:N1} days" -f ($Seconds / 86400); break }
+        default             { "{0:N1} {1} years" -f $years, $units[$i]; break }
+    }
+
+    $flair = "No flair available."
+    foreach ($threshold in ($flairMap.Keys | Sort-Object)) {
+        if ($Seconds -lt $threshold) {
+            $flair = Get-Random -InputObject $flairMap[$threshold]
+            break
+        }
+    }
+
+    return [PSCustomObject]@{
+        FormattedTime = $formatted
+        Flair         = $flair
     }
 }
 
+function Get-LeetAdjustment {
+    param (
+        [Parameter(Mandatory)]
+        [string]$Passphrase
+    )
+
+    $leetPatterns = @{
+        'a' = '4|@'
+        'e' = '3'
+        'i' = '1|!'
+        'o' = '0'
+        's' = '5|\$'
+        't' = '7'
+    }
+
+    $leetMatches = 0
+    foreach ($char in $leetPatterns.Values) {
+        if ($Passphrase -match $char) {
+            $leetMatches++
+        }
+    }
+
+    if ($leetMatches -ge 2) {
+        return 3 
+    } elseif ($leetMatches -eq 1) {
+        return 1 
+    }    
+
+    return 0
+}
 
 
 function Get-EstimatedPenalty {
@@ -499,6 +435,23 @@ function Get-EstimatedPenalty {
         $penalty += [Math]::Min(5 + ($dupes * 5), 15)
     }
 
+    if ($Passphrase -match '[{}<>\[\]\$\^\!\@\#\%\&\*\+\=]') {
+        $penalty -= 5 # Special characters are often used in strong passphrases, so we reduce penalty for their presence.
+    }
+
+    if ($Passphrase -match '[0-9]' -and $Passphrase -match '[A-Za-z]') {
+        $penalty -= 3
+    }
+
+    if ($Passphrase -match '[a-z][A-Z]|[A-Z][a-z]') {
+        $penalty -= 2  # camel or Pascal case
+    }
+
+    $penalty -= Get-LeetAdjustment -Passphrase $Passphrase
+
+    # Ensure penalty does not drop below zero
+    if ($penalty -lt 0) { $penalty = 0 }
+
     return $penalty
 }
 
@@ -522,7 +475,9 @@ function Measure-PassphraseStrength {
     )
 
     # Count words
-    $wordCount = ($Passphrase -split '\s+').Count
+    $wordCount = (($passphrase -split '[^a-zA-Z0-9]+') | Where-Object { $_.Length -gt 0 }).Count
+
+     # ($Passphrase -split '\s+').Count
 
     # Theoretical entropy: E = L * log2(R)
     $entropy = [math]::Round($wordCount * [math]::Log($WordPoolSize, 2), 1)
@@ -539,7 +494,7 @@ function Measure-PassphraseStrength {
     }
 
     # Adjusted entropy
-    $adjustedEntropy = [math]::Round($entropy - $Penalty, 1)
+    $adjustedEntropy = [math]::Round([Math]::Max(0, $entropy - $penalty), 1)
 
     # Time to crack: T = 2^E / R
     $offlineSeconds = [math]::Pow(2, $adjustedEntropy) / $OfflineGuessesPerSecond

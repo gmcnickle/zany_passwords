@@ -1,7 +1,7 @@
-
 # Passwords Don't Have to be Hard and Dull
 
 If you're like me, namely not super-creative and not blessed with a photographic memory, then the process of creating a new password is daunting.  Your passwords must:
+
 - be long enough
 - be complex enough
 - be simple enough to remember
@@ -24,11 +24,13 @@ E = L × log2(R)
 ```
 
 Where:
+
 - **E** is the entropy in bits
 - **L** is the number of words in the passphrase
 - **R** is the size of the word pool (i.e., the number of possible words each slot could be filled with)
 
 This formula assumes:
+
 - Each word is selected randomly from a known-sized pool
 - There’s no predictability, grammar, or quote structure bias
 
@@ -38,20 +40,17 @@ The thing is, this formula doesn't really work well for us, because we're not us
 
 Let's evaluate our example now with the updated algorithm:
 
-
-| Phrase                                                          | Adjusted Entropy | Offline Crack Time | Online Crack Time       |
-|------------------------------------------------------------------|------------------|--------------------|--------------------------|
-| The Right of the People To Keep And Bear Arms Shall Not Be Infringed | 137.6 bits       | 1.5 octillion years | 480 tredecillion years   |
-| The Right to Bear Burritos Shall Not Be Infringed               | 48.7 bits        | 7.6 minutes           | 1.4 million years        |
+| Phrase                                                               | Adjusted Entropy | Offline Crack Time  | Online Crack Time      |
+| -------------------------------------------------------------------- | ---------------- | ------------------- | ---------------------- |
+| The Right of the People To Keep And Bear Arms Shall Not Be Infringed | 137.6 bits       | 1.5 octillion years | 480 tredecillion years |
+| The Right to Bear Burritos Shall Not Be Infringed                    | 48.7 bits        | 7.6 minutes         | 1.4 million years      |
 
 While the adjusted entropy of our zany passphrases may suggest they could be cracked in a short amount of time under worst-case conditions, this estimate assumes a perfect storm: an attacker using a fast brute-force engine, operating offline, against a poorly protected system (e.g., one that uses outdated, unsalted hashes like MD5).
 
 In the real world, most secure systems:
 
 - Use slow, modern password hashing algorithms (like bcrypt or argon2)
-
 - Include salts to prevent precomputed attacks
-
 - Enforce rate limits that make online guessing impractical
 
 When used responsibly — such as stored in password managers, or hashed securely by modern systems — these passphrases become extraordinarily difficult to crack, even by well-funded adversaries. What makes them powerful is not just their structure, but their usability: they're long, unique, and memorable without being burdensome.
@@ -60,7 +59,7 @@ This tool doesn't just generate passwords with good entropy — it encourages st
 
 > 📝 NOTE: I'll leave it to the reader if you want to adjust the code to only suggest passwords with a minimum offline crack time.  The provided scripts should give you all the tools to do that.
 
-# Appendix
+---
 
 ## Estimating Passphrase Entropy Without Dictionaries
 
@@ -71,17 +70,19 @@ E = L × log2(R)
 ```
 
 Where:
+
 - **E** is the estimated entropy in bits
 - **L** is the number of words in the passphrase
-- **R** is the size of the word pool (typically ~2,000 for structured English passphrases)
+- **R** is the size of the word pool (typically \~2,000 for structured English passphrases)
 
 However, this assumes that:
+
 - Each word is selected **randomly and independently** from a uniform pool
 - The passphrase has **no grammatical structure or predictable phrasing**
 
 This makes the formula unsuitable for evaluating well-known quotes, idioms, or template-based phrases, which attackers can guess more easily despite having high theoretical entropy.
 
-## Adjusted Entropy Model
+### Adjusted Entropy Model
 
 To account for predictability, we adjust the estimated entropy using a penalty factor:
 
@@ -93,35 +94,39 @@ Where **P** is a penalty (in bits) applied based on how predictable or quote-lik
 
 Even without external data or known-quote lists, we can reasonably estimate **P** using heuristic signals derived from the passphrase itself:
 
-| Signal                             | Meaning                              | Suggested Penalty |
-|------------------------------------|--------------------------------------|-------------------|
-| Matches a known phrase template    | Scripted pattern                     | 25–35 bits        |
-| Grammatically valid English        | Predictable sentence structure       | 10–15 bits        |
-| Fully title-cased words            | Quote formatting style               | 5–10 bits         |
-| High count of stop words (the, to) | Natural language vs randomness       | 10–15 bits        |
-| Repetition of same word or form    | Simplicity and lower entropy         | 10–20 bits        |
+| Signal                             | Meaning                             | Suggested Penalty |
+| ---------------------------------- | ----------------------------------- | ----------------- |
+| Matches a known phrase template    | Scripted pattern                    | 25–35 bits        |
+| Grammatically valid English        | Predictable sentence structure      | 10–15 bits        |
+| Fully title-cased words            | Quote formatting style              | 5–10 bits         |
+| High count of stop words (the, to) | Natural language vs randomness      | 10–15 bits        |
+| Repetition of same word or form    | Simplicity and lower entropy        | 10–20 bits        |
+| Excessively short or common words  | Lower word-pool variation           | 5–10 bits         |
+| Formatting symbols or leet speak   | May reduce or increase guessability | -3 to +5 bits     |
 
 ### Example
 
-Passphrase:  
+Passphrase:\
 **“The Right to Bear Burritos Shall Not Be Infringed”**
 
 - Matches a known quote template → +25 bits
 - Title-case formatting → +5 bits
-- Natural grammatical flow → +10 bits  
-**Total Penalty (P): ~40 bits**
+- Natural grammatical flow → +10 bits\
+  **Total Penalty (P): \~40 bits**
 
 Theoretical entropy:
+
 ```
 E = 9 × log2(2000) ≈ 98.7 bits
 ```
 
 Adjusted:
+
 ```
 E ≈ 98.7 - 40 = 58.7 bits
 ```
 
-#### Summary
+---
 
 ## Estimating Time to Crack a Passphrase
 
@@ -134,10 +139,12 @@ T = 2^E / R
 ```
 
 Where:
+
 - **E** is the entropy in bits (adjusted for predictability)
 - **R** is the number of guesses per second an attacker can make
 
 ### Assumptions
+
 We consider two common attack scenarios:
 
 - **Offline attack**: 1 trillion guesses/sec (`R = 10^12`)
@@ -145,17 +152,14 @@ We consider two common attack scenarios:
 
 > The offline cracking estimate assumes a worst-case scenario: an attacker with access to the hashed password and the ability to test 1 trillion guesses per second — possible with fast, outdated algorithms like MD5 or SHA-1. In well-designed systems that use bcrypt, argon2, or other slow hashing methods, real-world crack times could be millions or billions of times longer.
 
+---
 
 ## How to Use the Included Scripts
 
 This project includes two PowerShell scripts:
 
-- **[New-ZanyPassphrase.ps1](https://github.com/gmcnickle/zany_passwords/blob/main/New-ZanyPassword.ps1)** – A fun generator that creates memorable (and surprisingly strong) passphrases using slightly absurd phrases.
-- **[Measure-PassphraseStrength.ps1](https://github.com/gmcnickle/zany_passwords/blob/main/Measure-PassphraseStrength.ps1)** – A helper script that estimates how secure a passphrase is using an adjusted entropy formula.
-
-
-> 📝 NOTE: This model only penalizes phrases that match known templates or show structural signals of predictability. Highly original or unseen phrases (even if quote-like) may bypass these checks. Future enhancements could incorporate embedding-based semantic similarity for more robust detection.
-
+- **New-ZanyPassphrase.ps1** – A fun generator that creates memorable (and surprisingly strong) passphrases using slightly absurd phrases.
+- **Measure-PassphraseStrength.ps1** – A helper script that estimates how secure a passphrase is using an adjusted entropy formula.
 
 You can run either script directly from PowerShell. They’re self-documenting with `-?` or `Get-Help`, but here’s a quick primer:
 
@@ -168,7 +172,7 @@ You can run either script directly from PowerShell. They’re self-documenting w
 Generates 5 zany phrases. You can also:
 
 - Use `-Join` to glue two phrases together.
-- Use `-Obfuscate` to get an acronym-style output.
+- Use `-ObfuscationMode leet` or `hash`, `compress`, or `scramble` to apply a transformation.
 - Use `-Category "classic"` to choose a specific phrase style.
 
 ### Measuring Passphrase Strength
@@ -177,57 +181,62 @@ Generates 5 zany phrases. You can also:
 .\Measure-PassphraseStrength.ps1 -Passphrase "Never Bring a Sword to a Brainfight"
 ```
 
-Outputs an estimate of entropy, plus crack times for both online and offline scenarios. You can tweak the `-Penalty` value if the phrase is especially predictable or particularly obscure.
+Outputs an estimate of entropy, plus crack times for both online and offline scenarios.
 
 ### Adapting for Password Requirements
 
 Some systems have **strict complexity rules** or **length limits** that may prevent you from using these passphrases as-is. Here’s how you can adapt them without losing too much security:
 
-- **Too long?**  
+- **Too long?**\
   Use a single phrase, or enable `-Join` mode in the generator to compress the output into one sentence.
 
-- **Requires numbers or symbols?**  
+- **Requires numbers or symbols?**\
   Try:
+
   - Replacing a word with a number (`bear → 8ear`)
   - Adding punctuation (`!`, `?`, `.`, etc.) to the beginning or end
   - Swapping letters (`a → @`, `s → $`, etc.)
 
-  **Example:**  
-  `"The Right to Bear Burritos Shall Not Be Infringed"`  
+  **Example:**\
+  `"The Right to Bear Burritos Shall Not Be Infringed"`\
   → `TheRight2BearBurritos!`
 
-- **Length limit (e.g., max 20 characters)?**  
-  Use `-Obfuscate` mode to generate a short acronym:
+- **Length limit (e.g., max 20 characters)?**\
+  Use `-ObfuscationMode compress` to generate a short acronym:
 
   ```
   trtbbsnbi  # from "The Right to Bear Burritos Shall Not Be Infringed"
   ```
 
-  Then add numbers or symbols for extra strength:  
+  Then add numbers or symbols for extra strength:\
   `Trtbbsnbi7!`
 
 These small tweaks preserve **structure**, **meaning**, and **memorability** — the core qualities of a strong passphrase.
 
+---
 
-# In Closing
+## In Closing
 
-## [Password of the Week](https://github.com/gmcnickle/zany_passwords/tree/main/PassphraseOfTheWeek)
+### Password of the Week
+
 To keep things fresh (and frankly, to entertain myself), I’ll be sharing a new Zany Passphrase of the Week right here on this site. Think motivational posters meet password security. They’ll be memorable, ridiculous, and a great starting point for your own variations.
 
-## Disclaimer
+### Disclaimer
+
 These passwords are meant to be fun *and* secure, but don't use unmodified examples as-is -- always generate your own!
 
-## Credits
-This project uses a modified and optimized version of the [Quotes Dataset originally curated by akmittal](https://www.kaggle.com/datasets/akmittal/quotes-dataset) on Kaggle.
-The individual quotes are believed to be in the public domain, but the original dataset compilation is credited to the author.
-My version includes transformations for performance and relevance to this application.
+### Credits
 
-## Special Thanks
+This project uses a modified and optimized version of the [Quotes Dataset originally curated by akmittal](https://www.kaggle.com/datasets/akmittal/quotes-dataset) on Kaggle. The individual quotes are believed to be in the public domain, but the original dataset compilation is credited to the author. My version includes transformations for performance and relevance to this application.
+
+### Special Thanks
+
 I want to give a shout-out to [OpenAI](https://openai.com/) and [ChatGPT](https://openai.com/chatgpt/overview/), who have made this project fun and collaborative.  Thanks for all that you do!
 
-## Licensing
-- **Code**: All source code files (e.g., .py, .js, .c) in this repository are licensed under the [MIT License](LICENSE.md). If you use these scripts, a shout-out to [Gary McNickle](https://github.com/gmcnickle) and this repository is appreciated but not required.
-- **Non-Code Content**: All documentation, images, and written content (e.g., .md, .jpg, .png, .txt, .pdf) are licensed under the [Creative Commons Attribution 4.0 International Public License](LICENSE-CC-BY.md). Please attribute as: "© Gary McNickle 2025, licensed under CC BY 4.0 International" with a link to https://creativecommons.org/licenses/by/4.0/.
+### Licensing
+
+- **Code**: All source code files (e.g., .ps1, .py) in this repository are licensed under the [MIT License](LICENSE.md). If you use these scripts, a shout-out to [Gary McNickle](https://github.com/gmcnickle) and this repository is appreciated but not required.
+- **Non-Code Content**: All documentation, images, and written content (e.g., .md, .jpg, .txt) are licensed under the [Creative Commons Attribution 4.0 International Public License](LICENSE-CC-BY.md). Please attribute as: "© Gary McNickle 2025, licensed under CC BY 4.0 International" with a link to [https://creativecommons.org/licenses/by/4.0/](https://creativecommons.org/licenses/by/4.0/).
 - **Other Files**: Any files not explicitly categorized (e.g., .json, .yml) are licensed under CC BY 4.0 unless otherwise noted.
 - **Contributions**: By contributing to this repository, you agree to license your code under the MIT License and non-code contributions under CC BY 4.0.
 
