@@ -183,6 +183,17 @@ Generates 5 zany phrases. You can also:
 
 Outputs an estimate of entropy, plus crack times for both online and offline scenarios.
 
+### Quote Similarity Warning
+Some passphrases may appear equally strong in length and structure, yet have very different adjusted entropy scores. This is usually caused by partial or full matches to well-known quotes, detected using fuzzy string comparison (Jaccard similarity).
+For example:
+
+“May the Forge Be with Your Burritos.” — 24 bits
+
+“All Your Dispel Are Belong to Justice.” — 34 bits
+
+Both are 7 words, absurd, and memorable — but the former closely mimics a famous movie quote. Even zany variations of popular phrases may still get flagged as guessable, reducing their estimated strength.  
+Additionally, differences in stop words (`may`, `the`, `be`, `with`, `your`, etc.), **capitalization**, and **punctuation** may influence the final score as well.
+
 ### Adapting for Password Requirements
 
 Some systems have **strict complexity rules** or **length limits** that may prevent you from using these passphrases as-is. Here’s how you can adapt them without losing too much security:

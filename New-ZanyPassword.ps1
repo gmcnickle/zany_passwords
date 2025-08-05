@@ -51,7 +51,6 @@ Collaborator: ChatGPT (OpenAI)
 This script was collaboratively designed through interactive sessions with ChatGPT, combining human insight and AI-assisted development.
 Attribution is appreciated: https://github.com/gmcnickle/zany_passwords but not required.
 #>
-
 param (
     [string]$JsonPath = "$PSScriptRoot\passphrase-data.json",
     [string]$Category,
@@ -63,6 +62,7 @@ param (
     [switch]$ListCategories
 )
 
+Import-Module "$PSScriptRoot\Measure-PassphraseStrength.ps1" -Force
 
 function Get-RandomItem {
     [CmdletBinding()]
@@ -200,7 +200,21 @@ for ($i = 1; $i -le $Count; $i++) {
         "scramble" { $phrase = ConvertTo-ScrambledPhrase $phrase }
     }
 
-    $results += $phrase
+    $complexity = Measure-PassphraseStrength -Passphrase $phrase
+
+    $results += $complexity
 }
 
-$results | ForEach-Object { Write-Host $_ }
+$results | ForEach-Object {
+    Write-Host ""
+    Write-Host -NoNewline -ForegroundColor Green "Passphrase       : "
+    Write-Host $_.Passphrase
+    Write-Host -NoNewline -ForegroundColor Green "Words            : "
+    Write-Host $_.Words
+    Write-Host -NoNewline -ForegroundColor Green "AdjustedEntropy  : "
+    Write-Host $_.AdjustedEntropy
+    Write-Host -NoNewline -ForegroundColor Green "OfflineCrackTime : "
+    Write-Host "$($_.OfflineCrackTime.FormattedTime); Flair: $($_.OfflineCrackTime.Flair)"
+    Write-Host -NoNewline -ForegroundColor Green "OnlineCrackTime  : "
+    Write-Host "$($_.OnlineCrackTime.FormattedTime); Flair: $($_.OnlineCrackTime.Flair)"
+}
